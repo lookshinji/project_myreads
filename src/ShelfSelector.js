@@ -4,7 +4,8 @@ class ShelfSelector extends Component {
   render(){
     return(
       <div className="book-shelf-changer">
-        <select value={this.props.shelfStatus} onChange={this.props.handleShelfSelect} onBlur={this.props.handleShelfSelect}>
+        <select
+          value={this.props.shelfStatus ? this.props.shelfStatus : 'none' } onChange={this.props.handleShelfSelect}>
           <option value="none" disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
           <option value="wantToRead">Want to Read</option>

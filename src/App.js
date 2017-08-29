@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
+import { debounce } from 'lodash';
 import './App.css';
 
 //Components
@@ -21,31 +22,33 @@ class BooksApp extends Component {
   }
 
   bookSearch(term){
-    BooksAPI.search(term, 20)
-      .then(response => {
-        this.setState({ results : response ? response : []});
-      });
+    if(term === '') {
+      this.setState({results: []});
+    } else {
+      BooksAPI.search(term, 20)
+        .then(response => {
+          if (response.error) {
+            this.setState({ results : [] });
+          } else {
+            this.setState({ results : response });
+          }
+        });
+    }
   }
 
   shelfChange = (e, book) => {
     let shelf = e.target.value;
     BooksAPI.update(book, shelf)
       .then(response => {
-        this.setState((state) => ({
-          books: state.books.map(b => {
-            if(b.id === book.id) {
-              let updated_b = b;
-              updated_b['shelf'] = shelf;
-
-              return updated_b;
-            }
-            return b;
-          })
-        }));
+        BooksAPI.getAll()
+          .then(response => {
+            this.setState({ books : response });
+          });
       });
   };
 
   render(){
+    const bookSearch = debounce((term) => { this.bookSearch(term); }, 300);
     return (
       <div className="app">
         <Route exact path="/" render={() =>(
@@ -56,8 +59,10 @@ class BooksApp extends Component {
         )} />
         <Route path="/search" render={() => (
           <SearchPage
-            handleSearch={term => this.bookSearch(term)}
+            handleSearch={bookSearch}
+            handleShelfSelect={this.shelfChange}
             results={this.state.results}
+            books={this.state.books}
           />
         )} />
       </div>
