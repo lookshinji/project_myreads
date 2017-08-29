@@ -27,12 +27,31 @@ class BooksApp extends Component {
       });
   }
 
+  shelfChange = (e, book) => {
+    let shelf = e.target.value;
+    BooksAPI.update(book, shelf)
+      .then(response => {
+        this.setState((state) => ({
+          books: state.books.map(b => {
+            if(b.id === book.id) {
+              let updated_b = b;
+              updated_b['shelf'] = shelf;
+
+              return updated_b;
+            }
+            return b;
+          })
+        }));
+      });
+  };
+
   render(){
     return (
       <div className="app">
         <Route exact path="/" render={() =>(
           <MyBooksPage
             books={this.state.books}
+            handleShelfSelect={this.shelfChange}
           />
         )} />
         <Route path="/search" render={() => (

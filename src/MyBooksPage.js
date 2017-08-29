@@ -15,17 +15,20 @@ class MyBooksPage extends Component {
             books={this.props.books.filter(book => {
               return book.shelf === 'currentlyReading';
             })}
+            handleShelfSelect={this.props.handleShelfSelect}
           />
           <BookShelf
             shelfTitle="Want to Read"
             books={this.props.books.filter(book => {
               return book.shelf === 'wantToRead';
             })}
+            handleShelfSelect={this.props.handleShelfSelect}
           />
           <BookShelf shelfTitle="Read"
             books={this.props.books.filter(book => {
               return book.shelf === 'read';
             })}
+            handleShelfSelect={this.props.handleShelfSelect}
           />
         </div>
         <div className="open-search">
