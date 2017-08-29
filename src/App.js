@@ -4,25 +4,30 @@ import * as BooksAPI from './BooksAPI';
 import './App.css';
 
 //Components
-import BookList from './BookList';
+import MyBooksPage from './MyBooksPage';
 import SearchPage from './SearchPage';
 
 class BooksApp extends Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: true
+    results: [],
+  }
+  
+  bookSearch(term) {
+    BooksAPI.search(term, 20)
+      .then(response => {
+        this.setState({ results : response ? response : []});
+      });
   }
 
   render() {
     return (
       <div className="app">
-        <Route exact path="/" component={BookList} />
-        <Route path="/search" component={SearchPage}/>
+        <Route exact path="/" component={MyBooksPage} />
+        <Route path="/search" render={() => (
+          <SearchPage
+            handleSearch={term => this.bookSearch(term)}
+            results={this.state.results} />
+        )} />
       </div>
     );
   }
