@@ -41,10 +41,13 @@ class SearchPage extends Component {
                     />
                   </div>
                   <div className="book-title">{book.title}</div>
-                  <div className="book-authors">{book.authors.map(
-                    (author, index) => {
-                      return index === book.authors.length - 1 ? author : `${author}, `;
-                    })}</div>
+                  <div className="book-authors">
+                    {book.authors ? (book.authors.map(
+                      (author, index) => {
+                        return index === book.authors.length - 1 ? author : `${author}, `;
+                      })
+                    ) : 'no author listed' }
+                  </div>
                 </div>
               </li>
             ))}

@@ -20,10 +20,12 @@ class BookShelf extends Component {
                     />
                   </div>
                   <div className="book-title">{mybook.title}</div>
-                  <div className="book-authors">{mybook.authors.map(
-                    (author, index) => {
-                      return index === mybook.authors.length - 1 ? author : `${author}, `;
-                    })}
+                  <div className="book-authors">
+                    {mybook.authors ? (mybook.authors.map(
+                      (author, index) => {
+                        return index === mybook.authors.length - 1 ? author : `${author}, `;
+                      })
+                    ) : 'no author listed' }
                   </div>
                 </div>
               </li>
