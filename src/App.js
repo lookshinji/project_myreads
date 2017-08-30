@@ -12,6 +12,7 @@ class BooksApp extends Component {
   state = {
     books : [],
     results: [],
+    term : '',
   }
 
   componentDidMount(){
@@ -21,7 +22,13 @@ class BooksApp extends Component {
       });
   }
 
-  bookSearch(term){
+  onSearchChange = (term) => {
+    this.setState({ term });
+    const searchBooks = debounce(() => this.bookSearch(term), 300);
+    searchBooks();
+  }
+
+  bookSearch = (term) => {
     if(term === '') {
       this.setState({results: []});
     } else {
@@ -30,11 +37,30 @@ class BooksApp extends Component {
           if (response.error) {
             this.setState({ results : [] });
           } else {
-            this.setState({ results : response });
+            this.compareResults(response);
           }
         });
     }
   }
+
+  compareResults = (response) => {
+    const { books } = this.state;
+
+    this.setState({
+      results: response.filter(book => {
+        return !books.some(myBook => {
+          return myBook.id === book.id;
+        });
+      })
+    });
+  }
+
+  clearSearch = () => {
+    this.setState({
+      results : [],
+      term : ''
+    });
+  };
 
   shelfChange = (e, book) => {
     let shelf = e.target.value;
@@ -48,21 +74,25 @@ class BooksApp extends Component {
   };
 
   render(){
-    const bookSearch = debounce((term) => { this.bookSearch(term); }, 300);
+    const { books, term, results } = this.state;
     return (
       <div className="app">
         <Route exact path="/" render={() =>(
           <MyBooksPage
-            books={this.state.books}
+            books={books}
             handleShelfSelect={this.shelfChange}
           />
         )} />
-        <Route path="/search" render={() => (
+        <Route path="/search" render={({ history }) => (
           <SearchPage
-            handleSearch={bookSearch}
-            handleShelfSelect={this.shelfChange}
-            results={this.state.results}
-            books={this.state.books}
+            term={term}
+            handleSearchChange={this.onSearchChange}
+            handleShelfSelect={(e, book) => {
+              this.shelfChange(e, book);
+              history.push('/');
+              this.clearSearch();
+            }}
+            results={results}
           />
         )} />
       </div>
