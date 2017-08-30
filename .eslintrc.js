@@ -4,6 +4,8 @@ module.exports = {
         "jsx-a11y"
     ],
     "rules": {
+        "jsx-a11y/no-onchange": 0,
+
         "indent": [
             "error",
             2
