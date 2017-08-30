@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 //Components
-import ShelfSelector from './ShelfSelector';
+import Book from './Book';
 
 const SearchPage = (props) => {
   const { term, handleSearchChange, results, handleShelfSelect } = props;
@@ -23,23 +23,10 @@ const SearchPage = (props) => {
         <ol className="books-grid">
           {results.map(book => (
             <li key={book.id}>
-              <div className="book">
-                <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks ? book.imageLinks.thumbnail : ''})` }}></div>
-                  <ShelfSelector
-                    shelfStatus={book.shelf}
-                    handleShelfSelect={e => handleShelfSelect(e, book)}
-                  />
-                </div>
-                <div className="book-title">{book.title ? book.title : 'no title'}</div>
-                <div className="book-authors">
-                  {book.authors ? (book.authors.map(
-                    (author, index) => {
-                      return index === book.authors.length - 1 ? author : `${author}, `;
-                    })
-                  ) : 'no author' }
-                </div>
-              </div>
+              <Book
+                handleShelfSelect={handleShelfSelect}
+                book={book}
+              />
             </li>
           ))}
         </ol>
