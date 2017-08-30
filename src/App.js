@@ -37,30 +37,30 @@ class BooksApp extends Component {
           if (response.error) {
             this.setState({ results : [] });
           } else {
-            this.compareResults(response);
+            this.updateSearchResults(response);
           }
         });
     }
   }
 
-  compareResults = (response) => {
-    const { books } = this.state;
-
-    this.setState({
-      results: response.filter(book => {
-        return !books.some(myBook => {
-          return myBook.id === book.id;
-        });
-      })
-    });
+  compareMyBooks = (mybooks, book) => {
+    book.shelf = 'none';
+    for(const mybook of mybooks){
+      if(book.id === mybook.id){
+        book.shelf = mybook.shelf;
+      }
+    }
+    return book;
   }
 
-  clearSearch = () => {
-    this.setState({
-      results : [],
-      term : ''
-    });
-  };
+  updateSearchResults = (results) => {
+    this.setState(
+      {
+        results: results.map(book =>
+          this.compareMyBooks(this.state.books, book))
+      }
+    );
+  }
 
   shelfChange = (e, book) => {
     let shelf = e.target.value;
@@ -71,6 +71,13 @@ class BooksApp extends Component {
             this.setState({ books : response });
           });
       });
+  };
+
+  clearSearch = () => {
+    this.setState({
+      results : [],
+      term : ''
+    });
   };
 
   render(){
