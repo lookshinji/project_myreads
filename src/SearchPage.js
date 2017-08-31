@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Book from './Book';
 
 const SearchPage = (props) => {
-  const { term, handleSearchChange, results, handleShelfSelect } = props;
+  const { term, onSearchChange, results, onShelfSelect } = props;
   return(
     <div className="search-books">
       <div className="search-books-bar">
@@ -13,7 +13,7 @@ const SearchPage = (props) => {
         <div className="search-books-input-wrapper">
           <input
             value={term}
-            onChange={ e => handleSearchChange(e.target.value) }
+            onChange={ e => onSearchChange(e.target.value) }
             type="text"
             placeholder="Search by title or author"
           />
@@ -24,7 +24,7 @@ const SearchPage = (props) => {
           {results.map(book => (
             <li key={book.id}>
               <Book
-                handleShelfSelect={handleShelfSelect}
+                onShelfSelect={onShelfSelect}
                 book={book}
               />
             </li>

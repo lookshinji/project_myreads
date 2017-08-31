@@ -3,14 +3,14 @@ import React from 'react';
 import ShelfSelector from './ShelfSelector';
 
 const Book = (props) => {
-  const{ book, handleShelfSelect } = props;
+  const{ book, onShelfSelect } = props;
   return(
     <div className="book">
       <div className="book-top">
         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:`url(${book.imageLinks ? book.imageLinks.thumbnail : ''})` }}></div>
         <ShelfSelector
           shelfStatus={book.shelf}
-          handleShelfSelect={(e) => handleShelfSelect(e, book)}
+          onShelfSelect={(e) => onShelfSelect(e, book)}
         />
       </div>
       <div className="book-title">{book.title}</div>

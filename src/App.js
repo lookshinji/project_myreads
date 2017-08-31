@@ -22,7 +22,7 @@ class BooksApp extends Component {
       });
   }
 
-  onSearchChange = (term) => {
+  handleSearchChange = (term) => {
     this.setState({ term });
     const searchBooks = debounce(() => this.bookSearch(term), 300);
     searchBooks();
@@ -62,7 +62,7 @@ class BooksApp extends Component {
     );
   }
 
-  shelfChange = (e, book) => {
+  handleShelfChange = (e, book) => {
     let shelf = e.target.value;
     BooksAPI.update(book, shelf)
       .then(response => {
@@ -87,15 +87,15 @@ class BooksApp extends Component {
         <Route exact path="/" render={() =>(
           <MyBooksPage
             books={books}
-            handleShelfSelect={this.shelfChange}
+            onShelfSelect={this.handleShelfChange}
           />
         )} />
         <Route path="/search" render={({ history }) => (
           <SearchPage
             term={term}
-            handleSearchChange={this.onSearchChange}
-            handleShelfSelect={(e, book) => {
-              this.shelfChange(e, book);
+            onSearchChange={this.handleSearchChange}
+            onShelfSelect={(e, book) => {
+              this.handleShelfChange(e, book);
               history.push('/');
               this.clearSearch();
             }}

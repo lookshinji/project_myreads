@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import BookShelf from './BookShelf';
 
 const MyBooksPage = (props) => {
-  const { books, handleShelfSelect } = props;
+  const { books, onShelfSelect } = props;
   return(
     <div className="list-books">
       <div className="list-books-title">
@@ -17,20 +17,20 @@ const MyBooksPage = (props) => {
           books={books.filter(book => {
             return book.shelf === 'currentlyReading';
           })}
-          handleShelfSelect={handleShelfSelect}
+          onShelfSelect={onShelfSelect}
         />
         <BookShelf
           shelfTitle="Want to Read"
           books={books.filter(book => {
             return book.shelf === 'wantToRead';
           })}
-          handleShelfSelect={handleShelfSelect}
+          onShelfSelect={onShelfSelect}
         />
         <BookShelf shelfTitle="Read"
           books={books.filter(book => {
             return book.shelf === 'read';
           })}
-          handleShelfSelect={handleShelfSelect}
+          onShelfSelect={onShelfSelect}
         />
       </div>
       <div className="open-search">

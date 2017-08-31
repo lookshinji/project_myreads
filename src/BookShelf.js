@@ -4,7 +4,7 @@ import React from 'react';
 import Book from './Book';
 
 const BookShelf = (props) => {
-  const{ shelfTitle, books, handleShelfSelect } = props;
+  const{ shelfTitle, books, onShelfSelect } = props;
   return(
     <div className="bookshelf">
       <h2 className="bookshelf-title">{shelfTitle}</h2>
@@ -13,7 +13,7 @@ const BookShelf = (props) => {
           {books.map(book => (
             <li key={book.id}>
               <Book
-                handleShelfSelect={handleShelfSelect}
+                onShelfSelect={onShelfSelect}
                 book={book}
               />
             </li>
