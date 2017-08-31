@@ -24,11 +24,10 @@ class BooksApp extends Component {
 
   handleSearchChange = (term) => {
     this.setState({ term });
-    const searchBooks = debounce(() => this.bookSearch(term), 300);
-    searchBooks();
+    this.bookSearch(term);
   }
 
-  bookSearch = (term) => {
+  bookSearch = debounce((term) => {
     if(term === '') {
       this.setState({results: []});
     } else {
@@ -41,7 +40,7 @@ class BooksApp extends Component {
           }
         });
     }
-  }
+  }, 300)
 
   compareMyBooks = (mybooks, book) => {
     book.shelf = 'none';
